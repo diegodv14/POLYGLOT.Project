@@ -11,6 +11,12 @@
 	  <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.1" />
 	  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.1" />
 	  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.1" />
+	  <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.1" />
+	  <PackageReference Include="MongoDB.Driver" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\POLYGLOT.Project.Transaction.application\POLYGLOT.Project.Transaction.application.csproj" />
   </ItemGroup>
 
 </Project>

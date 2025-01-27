@@ -8,7 +8,13 @@ namespace POLYGLOT.Project.Pay.infraestructure.ioc
     {
         public static IServiceCollection AddInfraestructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<DbContext>(opt => opt.UseMySQL(configuration.GetConnectionString("DefaultConnection")));
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new ArgumentNullException(nameof(connectionString), "La cadena de conexiòn no esta definida Micro.Pay");
+            }
+
+            services.AddDbContext<DbContext>(opt => opt.UseMySQL(connectionString));
             return services;
         }
     }
