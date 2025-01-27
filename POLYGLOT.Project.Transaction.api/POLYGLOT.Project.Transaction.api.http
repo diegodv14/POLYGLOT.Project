@@ -1,6 +1,0 @@
-@POLYGLOT.Project.Transaction.api_HostAddress = http://localhost:5076
-
-GET {{POLYGLOT.Project.Transaction.api_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
