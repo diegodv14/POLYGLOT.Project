@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POLYGLOT.Project.Invoice.in
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POLYGLOT.Project.Transaction.infraestructure", "POLYGLOT.Project.Transaction.infraestructure\POLYGLOT.Project.Transaction.infraestructure.csproj", "{951E4749-89B6-46F3-98D9-0536A5B893D8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POLYGLOT.Project.Security.application", "POLYGLOT.Project.Security.application\POLYGLOT.Project.Security.application.csproj", "{795528F8-7E7F-43E4-A6D8-FC92DA456E6B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{951E4749-89B6-46F3-98D9-0536A5B893D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{951E4749-89B6-46F3-98D9-0536A5B893D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{951E4749-89B6-46F3-98D9-0536A5B893D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{795528F8-7E7F-43E4-A6D8-FC92DA456E6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{795528F8-7E7F-43E4-A6D8-FC92DA456E6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{795528F8-7E7F-43E4-A6D8-FC92DA456E6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{795528F8-7E7F-43E4-A6D8-FC92DA456E6B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,5 +96,6 @@ Global
 		{7821763C-C19C-4146-9158-38FB9CF3B2D1} = {56201661-99C8-46D7-8DEB-3F480C52F6A2}
 		{CC9A935C-D006-4BB8-AE5B-FFA093B00CE1} = {7A3192E0-08CD-4BC3-A3FA-3AD9D757BC12}
 		{951E4749-89B6-46F3-98D9-0536A5B893D8} = {3340099C-204A-45BF-AEDA-C827AC64E113}
+		{795528F8-7E7F-43E4-A6D8-FC92DA456E6B} = {B2B3BCA1-C5C0-4263-9CCE-4CBE8A7E4625}
 	EndGlobalSection
 EndGlobal

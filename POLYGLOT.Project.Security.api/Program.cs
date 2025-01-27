@@ -1,8 +1,11 @@
 
 
+using POLYGLOT.Project.Security.infraestructure.ioc;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddInfraestructure(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
