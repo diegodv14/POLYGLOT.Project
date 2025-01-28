@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using POLYGLOT.Project.Invoice.application.Dto;
 using POLYGLOT.Project.Invoice.application.Exceptions;
 using POLYGLOT.Project.Invoice.application.Interfaces;
 using POLYGLOT.Project.Invoice.application.Models;
@@ -16,12 +17,15 @@ namespace POLYGLOT.Project.Invoice.infraestructure.Repositories
             _context = context;
         }
 
-        public async Task<dynamic> GetInvoices()
+        public async Task<InvoiceResponse> GetInvoices()
         {
             try
             {
+                InvoiceResponse res = new InvoiceResponse();
                 var invoices = await _context.Invoices.ToListAsync();
-                return "";
+                res.Invoices = invoices;
+
+                return res;
             }
             catch (Exception ex) {
                 throw ex;
@@ -33,6 +37,8 @@ namespace POLYGLOT.Project.Invoice.infraestructure.Repositories
         {
             try
             {
+
+
                 var invoice = await _context.Invoices.FirstOrDefaultAsync(s => s.IdInvoice == idInvoice) ?? throw new BaseCustomException($"La Factura con id {idInvoice} no existe", "", 404);
 
                 invoice.State = true;

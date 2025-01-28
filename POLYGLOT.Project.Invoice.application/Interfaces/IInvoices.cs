@@ -1,8 +1,10 @@
-﻿namespace POLYGLOT.Project.Invoice.application.Interfaces
+﻿using POLYGLOT.Project.Invoice.application.Dto;
+
+namespace POLYGLOT.Project.Invoice.application.Interfaces
 {
     public interface IInvoices
     {
-        Task<dynamic> GetInvoices();
+        Task<InvoiceResponse> GetInvoices();
         Task<bool> UpdateInvoice(int idInvoice);
     }
 }
