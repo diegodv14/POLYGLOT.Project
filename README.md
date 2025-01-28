@@ -1,5 +1,10 @@
 El proyecto usa DB en Contenedores Docker, con volumenes de manera local.
 
+--Rabbit MQ--
+
+1. Contenedor
+   docker run -d --name rabbitmq-container -e RABBITMQ_DEFAULT_USER=invoiceUser -e RABBITMQ_DEFAULT_PASS=pruebaInvoice -p 5672:5672 -p 15672:15672 -v rabbitmq_data:/var/lib/rabbitmq rabbitmq:3-management
+
 --My SQL Pay--
 
 1. Crear Contenedor
