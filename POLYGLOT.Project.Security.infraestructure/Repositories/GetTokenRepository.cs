@@ -26,7 +26,7 @@ namespace POLYGLOT.Project.Security.infraestructure.Repositories
         {
             try
             {
-                var access = await _context.Users.FirstOrDefaultAsync(x => x.Username == request.Username && x.Password == request.Password) ?? throw new BaseCustomException("Credenciales Incorrectas", "", 404);
+                var access = await _context.Users.FirstOrDefaultAsync(x => x.Username == request.Username && x.Password == request.Password) ?? throw new BaseCustomException("No existe el usuario que coincida el username y el password.", "", 404);
 
                 var token = GenerarToken(access);
 
