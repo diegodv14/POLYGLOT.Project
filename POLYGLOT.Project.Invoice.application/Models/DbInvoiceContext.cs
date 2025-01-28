@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace POLYGLOT.Project.Invoice.application.Models;
 
@@ -31,10 +33,7 @@ public partial class DbInvoiceContext : DbContext
                 .ValueGeneratedNever()
                 .HasColumnName("idInvoice");
             entity.Property(e => e.Amount).HasColumnName("amount");
-            entity.Property(e => e.State)
-                .HasDefaultValueSql("NULL::\"bit\"")
-                .HasColumnType("bit(1)")
-                .HasColumnName("state");
+            entity.Property(e => e.State).HasColumnName("state");
         });
 
         OnModelCreatingPartial(modelBuilder);

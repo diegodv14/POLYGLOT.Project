@@ -22,13 +22,13 @@ namespace POLYGLOT.Project.Security.infraestructure.Repositories
             _options = options;
         }
 
-        public async Task<AuthResponse> ObtenerToken(AuthRequest request)
+        public async Task<AuthResponse> GetToken(AuthRequest request)
         {
             try
             {
                 var access = await _context.Users.FirstOrDefaultAsync(x => x.Username == request.Username && x.Password == request.Password) ?? throw new BaseCustomException("No existe el usuario que coincida el username y el password.", "", 404);
 
-                var token = GenerarToken(access);
+                var token = CreateToken(access);
 
                 var res = new AuthResponse()
                 {
@@ -44,7 +44,7 @@ namespace POLYGLOT.Project.Security.infraestructure.Repositories
             }
         }
 
-        private string GenerarToken(User usuario)
+        private string CreateToken(User usuario)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Value.Key));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

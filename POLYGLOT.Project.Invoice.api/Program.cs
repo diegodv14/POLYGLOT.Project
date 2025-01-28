@@ -1,7 +1,7 @@
-using POLYGLOT.Project.Invoice.infraestructure.ioc;
+using POLYGLOT.Project.Invoice.infraestructure.Extensions;
+using POLYGLOT.Project.Invoice.infraestructure.Ioc;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -21,5 +21,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.ConfigureExceptionHandler();
 
 app.Run();

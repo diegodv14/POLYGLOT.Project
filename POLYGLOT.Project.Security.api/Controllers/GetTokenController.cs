@@ -24,7 +24,7 @@ namespace POLYGLOT.Project.Security.api.Controllers
         [Route("/PolyGlot/Security/GetToken")]
         public async Task<ActionResult<AuthResponse>> GenerarToken([FromBody] AuthRequest request)
         {
-            var response = await _getToken.ObtenerToken(request);
+            var response = await _getToken.GetToken(request);
             return Ok(response);
         }
     }
