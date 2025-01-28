@@ -9,22 +9,26 @@ El proyecto usa DB en Contenedores Docker, con volumenes de manera local.
 --Sql Server Security--
 
 1. Crear Contenedor
+   
   docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=ben10alienforce*" -p 1433:1433 --name sqlserver-container -v sqlserver_data:/var/opt/mssql -d 
   mcr.microsoft.com/mssql/server:2022-latest
 
 2. Acceder al Contenedor con usuario de root
+   
    docker exec -it --user root sqlserver-container bash
 
 3. Ejecutar Script
-  CREATE DATABASE db_security;
-  
-  USE db_security;
-  
-  CREATE TABLE users (
-    id_user INT PRIMARY KEY,   -- Campo id_user como clave primaria
-    username VARCHAR(100),     -- Campo username con un máximo de 100 caracteres
-    password VARCHAR(100)      -- Campo password con un máximo de 100 caracteres
-  );
+
+
+    CREATE DATABASE db_security;
+    
+    USE db_security;
+    
+    CREATE TABLE users (
+      id_user INT PRIMARY KEY,   -- Campo id_user como clave primaria
+      username VARCHAR(100),     -- Campo username con un máximo de 100 caracteres
+      password VARCHAR(100)      -- Campo password con un máximo de 100 caracteres
+    );
 
 --Postgres Invoice--
 
