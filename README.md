@@ -10,8 +10,8 @@ El proyecto usa DB en Contenedores Docker, con volumenes de manera local.
 
 1. Crear Contenedor
    
-  docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=ben10alienforce*" -p 1433:1433 --name sqlserver-container -v sqlserver_data:/var/opt/mssql -d 
-  mcr.microsoft.com/mssql/server:2022-latest
+    docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=ben10alienforce*" -p 1433:1433 --name sqlserver-container -v sqlserver_data:/var/opt/mssql -d 
+    mcr.microsoft.com/mssql/server:2022-latest
 
 2. Acceder al Contenedor con usuario de root
    
