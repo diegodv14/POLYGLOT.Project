@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using POLYGLOT.Project.Security.application.Exceptions;
 using POLYGLOT.Project.Security.application.Interfaces;
 using POLYGLOT.Project.Security.application.Models;
 
@@ -18,6 +19,8 @@ namespace POLYGLOT.Project.Security.api.Controllers
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(AuthResponse), 200)]
+        [ProducesResponseType(typeof(AuthError), 500)]
+        [ProducesResponseType(typeof(AuthError), 404)]
         [Route("/PolyGlot/Security/GetToken")]
         public async Task<ActionResult<AuthResponse>> GenerarToken([FromBody] AuthRequest request)
         {
