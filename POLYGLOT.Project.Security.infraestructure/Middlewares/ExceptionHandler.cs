@@ -31,6 +31,13 @@ namespace POLYGLOT.Project.Security.infraestructure.Middlewares
                             stackTrace = customException.StackTrace;
                         }
 
+                        if (exception is Exception Exception)
+                        {
+                            statusCode = 500;
+                            message = Exception.Message;
+                            stackTrace = "";
+                        }
+
                         else if (exception is ArgumentException || exception.Message.Contains("invalid_token"))
                         {
                             context.Response.Headers.Add("Token-Valid", "false");
