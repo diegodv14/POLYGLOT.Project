@@ -1,6 +1,4 @@
-
-
-using POLYGLOT.Project.Security.infraestructure.ioc;
+using POLYGLOT.Project.Security.infraestructure.Ioc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +16,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

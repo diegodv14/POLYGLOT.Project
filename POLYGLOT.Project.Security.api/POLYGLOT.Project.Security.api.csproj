@@ -11,10 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\POLYGLOT.Project.Security.infraestructure\POLYGLOT.Project.Security.infraestructure.csproj" />
   </ItemGroup>
 
