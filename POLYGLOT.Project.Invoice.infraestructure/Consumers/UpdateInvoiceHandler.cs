@@ -55,7 +55,7 @@ namespace POLYGLOT.Project.Invoice.infraestructure.Consumers
                     Console.WriteLine("Empezando a escuchar cola de RabbitMQ.......... \n");
                     consumer.ReceivedAsync += async (model, ea) =>
                     {
-                        Console.WriteLine("Mensaje Recibido de RabbitMQ");
+
                         var body = ea.Body.ToArray();
                         var message = Encoding.UTF8.GetString(body);
 
@@ -65,6 +65,7 @@ namespace POLYGLOT.Project.Invoice.infraestructure.Consumers
 
                             using (var scope = __service.CreateScope())
                             {
+                                Console.WriteLine("Mensaje Recibido de RabbitMQ....");
                                 var dbContext = scope.ServiceProvider.GetRequiredService<DbInvoiceContext>();
 
                                 await UpdateInvoice(res!.IdInvoice, dbContext);
@@ -74,7 +75,7 @@ namespace POLYGLOT.Project.Invoice.infraestructure.Consumers
                         catch (Exception ex)
                         {
                             Console.WriteLine($"Error procesando mensaje {message}: {ex.Message}");
-                            await channel.BasicNackAsync(deliveryTag: ea.DeliveryTag, multiple: false, requeue: true, cancellationToken: stoppingToken);
+                            await channel.BasicNackAsync(deliveryTag: ea.DeliveryTag, multiple: false, requeue: false, cancellationToken: stoppingToken);
                         }
                     };
 
