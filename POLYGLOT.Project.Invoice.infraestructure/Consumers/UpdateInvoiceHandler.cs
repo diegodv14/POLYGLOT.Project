@@ -1,5 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using POLYGLOT.Project.Invoice.application.Exceptions;
+using POLYGLOT.Project.Invoice.application.Models;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
@@ -11,11 +15,13 @@ namespace POLYGLOT.Project.Invoice.infraestructure.Consumers
     {
 
         private readonly IConnectionFactory _factory;
+        private readonly IServiceProvider __service;
         private readonly IConfiguration _configuration;
-        public UpdateInvoiceHandler(IConnectionFactory factory, IConfiguration configuration) 
+        public UpdateInvoiceHandler(IConnectionFactory factory, IConfiguration configuration, IServiceProvider service) 
         {
             _factory = factory;
             _configuration = configuration;
+            __service = service;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -33,7 +39,7 @@ namespace POLYGLOT.Project.Invoice.infraestructure.Consumers
                     string queueName = _configuration["RabbitMQ:Queue"]
                         ?? throw new Exception("La cola de RabbitMQ no está definida.");
 
-                    await channel.QueueDeclareAsync(queue: queueName, durable: false, exclusive: false, autoDelete: false, arguments: null, cancellationToken: stoppingToken);
+                    await channel.QueueDeclareAsync(queue: queueName, durable: true, exclusive: false, autoDelete: false, arguments: null, cancellationToken: stoppingToken);
 
                     string exchangeName = _configuration["RabbitMQ:Exchange"]
                         ?? throw new Exception("El exchange no está definido.");
@@ -56,8 +62,13 @@ namespace POLYGLOT.Project.Invoice.infraestructure.Consumers
                         try
                         {
                             var res = JsonSerializer.Deserialize<POLYGLOT.Project.Invoice.application.Models.Invoice>(message);
-                            Console.WriteLine(res);
-                            //await _invoices.UpdateInvoice(res!.IdInvoice);
+
+                            using (var scope = __service.CreateScope())
+                            {
+                                var dbContext = scope.ServiceProvider.GetRequiredService<DbInvoiceContext>();
+
+                                await UpdateInvoice(res!.IdInvoice, dbContext);
+                            }
                             await channel.BasicAckAsync(deliveryTag: ea.DeliveryTag, multiple: false, cancellationToken: stoppingToken);
                         }
                         catch (Exception ex)
@@ -80,6 +91,24 @@ namespace POLYGLOT.Project.Invoice.infraestructure.Consumers
                 }
 
                 await Task.Delay(5000, stoppingToken);
+            }
+        }
+
+        private async Task<bool> UpdateInvoice(int idInvoice, DbInvoiceContext _context)
+        {
+            try 
+            {
+                var invoice = await _context.Invoices.FirstOrDefaultAsync(s => s.IdInvoice == idInvoice) ?? throw new BaseCustomException($"La Factura con id {idInvoice} no existe", "", 404);
+
+                invoice.State = true;
+                _context.Invoices.Update(invoice);
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
 

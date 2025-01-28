@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using POLYGLOT.Project.Invoice.application.Interfaces;
 using POLYGLOT.Project.Invoice.application.Models;
 using POLYGLOT.Project.Invoice.infraestructure.Consumers;
