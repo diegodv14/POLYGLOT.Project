@@ -14,8 +14,8 @@ namespace POLYGLOT.Project.Transaction.infraestructure.ioc
 
             services.Configure<MongoSettings>(opt =>
             {
-                opt.ConnectionString = configuration.GetSection("MongoSettings:ConnectionString").Value;
-                opt.DatabaseName = configuration.GetSection("MongoSettings:DatabaseName").Value;
+                opt.ConnectionString = configuration["MongoSettings:ConnectionString"];
+                opt.DatabaseName = configuration["MongoSettings:DatabaseName"];
             });
 
 

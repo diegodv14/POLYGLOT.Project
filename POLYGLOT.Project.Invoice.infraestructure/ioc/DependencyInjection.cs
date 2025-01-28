@@ -14,17 +14,17 @@ namespace POLYGLOT.Project.Invoice.infraestructure.Ioc
         public static IServiceCollection AddInfraestructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<DbInvoiceContext>(opt => opt.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
-
             services.AddSingleton<IConnectionFactory>(sp =>
             {
                 return new ConnectionFactory
                 {
-                    HostName = configuration.GetConnectionString("RabbitMQ:Host"),
-                    UserName = configuration.GetConnectionString("RabbitMQ:User"),
-                    Password = configuration.GetConnectionString("RabbitMQ:Pass"),
-                    VirtualHost = configuration.GetConnectionString("RabbitMQ:VirtualHost"),
+                    HostName = configuration["RabbitMQ:Host"],
+                    UserName = configuration["RabbitMQ:User"],
+                    Password = configuration["RabbitMQ:Pass"],
+                    VirtualHost = configuration["RabbitMQ:VirtualHost"],
                 };
             });
+
             services.AddHostedService<UpdateInvoiceHandler>();
             services.AddScoped<IInvoices, InvoicesRepository>();
             return services;

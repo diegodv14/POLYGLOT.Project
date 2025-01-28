@@ -20,63 +20,68 @@ namespace POLYGLOT.Project.Invoice.infraestructure.Consumers
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-
-            try
+            while (!stoppingToken.IsCancellationRequested)
             {
-                var _connection = await _factory.CreateConnectionAsync(stoppingToken);
-                var _channel = await _connection.CreateChannelAsync();
+                IConnection? connection = null;
+                IChannel? channel = null;
 
-                string queueName = _configuration.GetConnectionString("RabbitMQ:Queue") ?? throw new Exception("La cola de RabbitMQ no esta definida.");
-
-                await _channel.QueueDeclareAsync(queue: queueName, durable: false, exclusive: false, autoDelete: false, arguments: null, cancellationToken: stoppingToken);
-
-
-                string exchangeName = _configuration.GetConnectionString("RabbitMQ:Exchange") ?? throw new Exception("El exchange no esta definido.");
-                string routingKey = _configuration.GetConnectionString("RabbitMQ:RoutingKey") ?? throw new Exception("La routingKey no esta definida.");
-
-                await _channel.QueueBindAsync(queue: queueName, exchange: exchangeName, routingKey: routingKey, cancellationToken: stoppingToken);
-
-                var consumer = new AsyncEventingBasicConsumer(_channel);
-
-                await _channel.BasicQosAsync(prefetchSize: 0, prefetchCount: 1, global: false, cancellationToken: stoppingToken);
-
-                Console.WriteLine("Empezando a escuchar cola de RabbitMQ.......... \n");
-                consumer.ReceivedAsync += async (model, ea) =>
+                try
                 {
-                    if (stoppingToken.IsCancellationRequested)
-                    {
-                        await _channel.BasicCancelAsync(consumer.ConsumerTags[0]);
-                        return;
-                    }
-                    Console.WriteLine("Mensaje Recibido de RabbitMQ");
-                    var body = ea.Body.ToArray();
-                    var message = Encoding.UTF8.GetString(body);
+                    connection = await _factory.CreateConnectionAsync(stoppingToken);
+                    channel = await connection.CreateChannelAsync();
 
-                    try
-                    {
-                        var res = JsonSerializer.Deserialize<POLYGLOT.Project.Invoice.application.Models.Invoice>(message);
-                        Console.WriteLine(res);
-                        //await _invoices.UpdateInvoice(res!.IdInvoice);
-                        await _channel.BasicAckAsync(deliveryTag: ea.DeliveryTag, multiple: false, cancellationToken: stoppingToken);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Error procesando mensaje {message}: {ex.Message}");
-                        await _channel.BasicNackAsync(deliveryTag: ea.DeliveryTag, multiple: false, requeue: true, cancellationToken: stoppingToken);
-                    }
-                };
+                    string queueName = _configuration["RabbitMQ:Queue"]
+                        ?? throw new Exception("La cola de RabbitMQ no está definida.");
 
-                await _channel.BasicConsumeAsync(queue: queueName, autoAck: false, consumer: consumer, cancellationToken: stoppingToken);
+                    await channel.QueueDeclareAsync(queue: queueName, durable: false, exclusive: false, autoDelete: false, arguments: null, cancellationToken: stoppingToken);
+
+                    string exchangeName = _configuration["RabbitMQ:Exchange"]
+                        ?? throw new Exception("El exchange no está definido.");
+                    string routingKey = _configuration["RabbitMQ:RoutingKey"]
+                        ?? throw new Exception("La routingKey no está definida.");
+
+                    await channel.QueueBindAsync(queue: queueName, exchange: exchangeName, routingKey: routingKey, cancellationToken: stoppingToken);
+
+                    var consumer = new AsyncEventingBasicConsumer(channel);
+
+                    await channel.BasicQosAsync(prefetchSize: 0, prefetchCount: 1, global: false, cancellationToken: stoppingToken);
+
+                    Console.WriteLine("Empezando a escuchar cola de RabbitMQ.......... \n");
+                    consumer.ReceivedAsync += async (model, ea) =>
+                    {
+                        Console.WriteLine("Mensaje Recibido de RabbitMQ");
+                        var body = ea.Body.ToArray();
+                        var message = Encoding.UTF8.GetString(body);
+
+                        try
+                        {
+                            var res = JsonSerializer.Deserialize<POLYGLOT.Project.Invoice.application.Models.Invoice>(message);
+                            Console.WriteLine(res);
+                            //await _invoices.UpdateInvoice(res!.IdInvoice);
+                            await channel.BasicAckAsync(deliveryTag: ea.DeliveryTag, multiple: false, cancellationToken: stoppingToken);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error procesando mensaje {message}: {ex.Message}");
+                            await channel.BasicNackAsync(deliveryTag: ea.DeliveryTag, multiple: false, requeue: true, cancellationToken: stoppingToken);
+                        }
+                    };
+
+                    await channel.BasicConsumeAsync(queue: queueName, autoAck: false, consumer: consumer, cancellationToken: stoppingToken);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error al intentar conectarse a RabbitMQ o iniciar el consumidor: {ex.Message}");
+                }
+                finally
+                {
+                    channel?.Dispose();
+                    connection?.Dispose();
+                }
+
+                await Task.Delay(5000, stoppingToken);
             }
-
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al intentar conectarse a RabbitMQ o iniciar el consumidor: {ex.Message}");
-
-            }
-
-            await Task.CompletedTask;
-
         }
+
     }
 }
