@@ -10,3 +10,9 @@ docker run --name mysql-container -e MYSQL_ROOT_PASSWORD=prueba -e MYSQL_DATABAS
 
 
 docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=ben10alienforce*" -p 1433:1433 --name sqlserver-container -v sqlserver_data:/var/opt/mssql -d mcr.microsoft.com/mssql/server:2022-latest
+
+//Postgres Invoice 
+
+
+docker run -d --name postgres-container -e POSTGRES_USER=invoicePrueba -e POSTGRES_PASSWORD=prueba -e POSTGRES_DB=db_invoice -v postgres-data:/var/lib/postgresql/data -p 5432:5432 postgres
+
