@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using POLYGLOT.Project.Invoice.application.Models;
 
 namespace POLYGLOT.Project.Invoice.infraestructure.ioc
 {
@@ -8,7 +9,7 @@ namespace POLYGLOT.Project.Invoice.infraestructure.ioc
     {
         public static IServiceCollection AddInfraestructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<DbContext>(opt => opt.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<DbInvoiceContext>(opt => opt.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
             return services;
         }
     }

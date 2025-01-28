@@ -13,5 +13,9 @@
 	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.1" />
 	<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.3" />
   </ItemGroup>
+	
+  <ItemGroup>
+    <ProjectReference Include="..\POLYGLOT.Project.Invoice.application\POLYGLOT.Project.Invoice.application.csproj" />
+  </ItemGroup>
 
 </Project>
