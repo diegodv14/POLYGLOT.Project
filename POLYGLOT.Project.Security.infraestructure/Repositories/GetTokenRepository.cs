@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using POLYGLOT.Project.Security.application.Dto;
+using POLYGLOT.Project.Security.application.Exceptions;
 using POLYGLOT.Project.Security.application.Interfaces;
 using POLYGLOT.Project.Security.application.Models;
 using System.IdentityModel.Tokens.Jwt;
@@ -25,7 +26,7 @@ namespace POLYGLOT.Project.Security.infraestructure.Repositories
         {
             try
             {
-                var access = await _context.Users.FirstOrDefaultAsync(x => x.Username == request.Username && x.Password == request.Password) ?? throw new Exception("Credenciales Incorrectas");
+                var access = await _context.Users.FirstOrDefaultAsync(x => x.Username == request.Username && x.Password == request.Password) ?? throw new BaseCustomException("Credenciales Incorrectas", "", 404);
 
                 var token = GenerarToken(access);
 
