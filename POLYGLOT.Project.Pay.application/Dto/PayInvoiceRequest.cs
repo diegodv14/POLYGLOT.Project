@@ -2,7 +2,7 @@
 {
     public class PayInvoiceRequest
     {
-        public int IdInvoice { get; set; }     
+        public int Secuencial { get; set; }     
         public decimal Amount { get; set; }
 
     }

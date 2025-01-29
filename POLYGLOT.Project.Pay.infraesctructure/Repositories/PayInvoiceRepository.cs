@@ -29,7 +29,7 @@ namespace POLYGLOT.Project.Pay.infraestructure.Repositories
             try
             {
 
-                var urlVerifyInvocice = _configuration.GetConnectionString("CheckInvoiceApi") + $"?idInvoice={request.IdInvoice}";
+                var urlVerifyInvocice = _configuration.GetConnectionString("CheckInvoiceApi") + $"?secuencial={request.Secuencial}";
                 var res = await _http.GetAsync(urlVerifyInvocice);
 
                 if (!res.IsSuccessStatusCode)
@@ -42,11 +42,11 @@ namespace POLYGLOT.Project.Pay.infraestructure.Repositories
                 var content = await res.Content.ReadAsStringAsync();
                 var invoice = JsonSerializer.Deserialize<InvoiceDto>(content);
 
-                if (invoice!.Amount < request.Amount) throw new BaseCustomException("El valor cancelado es mayor al de la factura","", 409);
+                if (invoice!.amount < request.Amount) throw new BaseCustomException("El valor cancelado es mayor al de la factura","", 409);
 
                 var newPaid = new Operation()
                 {
-                    IdInvoice = invoice.IdInvoice,
+                    IdInvoice = invoice.idInvoice,
                     Amount = request.Amount,
                     Date = DateTime.Now
                 };
@@ -61,14 +61,14 @@ namespace POLYGLOT.Project.Pay.infraestructure.Repositories
 
                 var invoiceInfo = new InvoiceDto()
                 {
-                    IdInvoice = request.IdInvoice,
-                    Amount = invoice.Amount,
-                    State = 1 // Por definir estados facturas
+                    idInvoice = invoice.idInvoice,
+                    amount = invoice.amount,
+                    state = true // Por definir estados facturas
                 };
 
                 var transactionInfo = new TransaccionDto()
                 {
-                    IdInvoice = request.IdInvoice,
+                    IdInvoice = invoice.idInvoice,
                     Amount = request.Amount,
                     Date = DateTime.Now
                 };

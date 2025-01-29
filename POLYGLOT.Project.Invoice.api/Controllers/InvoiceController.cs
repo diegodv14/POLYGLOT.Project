@@ -20,9 +20,22 @@ namespace POLYGLOT.Project.Invoice.api.Controllers
         [ProducesResponseType(typeof(ResponseError), 500)]
         [ProducesResponseType(typeof(ResponseError), 404)]
         [Route("/PolyGlot/Invoices/GetAllInvoices")]
-        public async Task<ActionResult<dynamic>> GetInvoicesList()
+        public async Task<ActionResult<InvoiceResponse>> GetInvoicesList()
         {
             var res = await _invoices.GetInvoices();
+            return Ok(res);
+        }
+
+        [HttpPost]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(ResponseSuccess), 200)]
+        [ProducesResponseType(typeof(ResponseError), 500)]
+        [ProducesResponseType(typeof(ResponseError), 404)]
+        [Route("/PolyGlot/Invoices/AddNewInvoice")]
+        public async Task<ActionResult<ResponseSuccess>> AddNewInvoice([FromBody] AddInvoiceDto data)
+        {
+            var res = await _invoices.AddInvoice(data);
             return Ok(res);
         }
 
@@ -34,9 +47,9 @@ namespace POLYGLOT.Project.Invoice.api.Controllers
         [ProducesResponseType(typeof(ResponseError), 500)]
         [ProducesResponseType(typeof(ResponseError), 404)]
         [Route("/PolyGlot/Invoices/CheckInvoice")]
-        public async Task<ActionResult<POLYGLOT.Project.Invoice.application.Models.Invoice>> CheckInvoiceStatus([FromQuery] int idInvoice)
+        public async Task<ActionResult<POLYGLOT.Project.Invoice.application.Models.Invoice>> CheckInvoiceStatus([FromQuery] int secuencial)
         {
-            var res = await _invoices.CheckInvoice(idInvoice);
+            var res = await _invoices.CheckInvoice(secuencial);
             return Ok(res);
         }
     }

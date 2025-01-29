@@ -5,7 +5,7 @@ namespace POLYGLOT.Project.Invoice.application.Interfaces
     public interface IInvoices
     {
         Task<InvoiceResponse> GetInvoices();
-
-        Task<POLYGLOT.Project.Invoice.application.Models.Invoice> CheckInvoice(int invoiceId);
+        Task<ResponseSuccess> AddInvoice(AddInvoiceDto data);
+        Task<POLYGLOT.Project.Invoice.application.Models.Invoice> CheckInvoice(int secuencial);
     }
 }

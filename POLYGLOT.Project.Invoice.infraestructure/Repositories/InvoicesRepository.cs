@@ -32,12 +32,43 @@ namespace POLYGLOT.Project.Invoice.infraestructure.Repositories
             }
         }
 
-
-        public async Task<POLYGLOT.Project.Invoice.application.Models.Invoice> CheckInvoice(int idInvoice)
+        public async Task<ResponseSuccess> AddInvoice(AddInvoiceDto data)
         {
             try
             {
-                var invoice = await _context.Invoices.FirstOrDefaultAsync(s => s.IdInvoice == idInvoice) ?? throw new BaseCustomException($"La factura con id {idInvoice} no esta registrada.", "", 404);
+                var secuencialExist = await _context.Invoices.FirstOrDefaultAsync(s => s.Secuencial == data.Secuencial);
+
+                if (secuencialExist != null) throw new BaseCustomException($"Ya existe una factura con este secuencial {data.Secuencial}", "", 409);
+
+                var newInvoice = new POLYGLOT.Project.Invoice.application.Models.Invoice()
+                {
+                    Amount = (float)data.Amount,
+                    Secuencial = data.Secuencial,
+                    Description = data.Description,
+                    State = false
+                };
+
+                _context.Invoices.Add(newInvoice);
+                await _context.SaveChangesAsync();
+
+                return new ResponseSuccess()
+                {
+                    Message = "Factura creada exitosamente",
+                    Status = 200
+                };
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+        public async Task<POLYGLOT.Project.Invoice.application.Models.Invoice> CheckInvoice(int secuencial)
+        {
+            try
+            {
+                var invoice = await _context.Invoices.FirstOrDefaultAsync(s => s.IdInvoice == secuencial) ?? throw new BaseCustomException($"La factura con secuencial {secuencial} no esta registrada.", "", 404);
                 return invoice;
             }
 

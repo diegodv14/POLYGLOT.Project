@@ -30,6 +30,7 @@ namespace POLYGLOT.Project.Pay.infraestructure.Ioc
             });
 
             services.AddScoped<IRabbitMQ, RabbitMQRepository>();
+            services.AddScoped<IPayInvoice, PayInvoiceRepository>();
             services.AddDbContext<DbOperationContext>(opt => opt.UseMySQL(connectionString));
             services.AddHttpClient();
             return services;
