@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using POLYGLOT.Project.Pay.application.Models;
 
 namespace POLYGLOT.Project.Pay.infraestructure.Ioc
 {
@@ -14,7 +15,7 @@ namespace POLYGLOT.Project.Pay.infraestructure.Ioc
                 throw new ArgumentNullException(nameof(connectionString), "La cadena de conexiòn no esta definida Micro.Pay");
             }
 
-            services.AddDbContext<DbContext>(opt => opt.UseMySQL(connectionString));
+            services.AddDbContext<DbOperationContext>(opt => opt.UseMySQL(connectionString));
             services.AddHttpClient();
             return services;
         }
