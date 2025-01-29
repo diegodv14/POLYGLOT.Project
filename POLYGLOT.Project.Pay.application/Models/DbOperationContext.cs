@@ -32,7 +32,7 @@ public partial class DbOperationContext : DbContext
             entity.ToTable("operation");
 
             entity.Property(e => e.IdOperation)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("idOperation");
             entity.Property(e => e.Amount)
                 .HasPrecision(20, 6)

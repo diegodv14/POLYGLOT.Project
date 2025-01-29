@@ -30,7 +30,7 @@ public partial class DbInvoiceContext : DbContext
             entity.ToTable("invoices");
 
             entity.Property(e => e.IdInvoice)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("idInvoice");
             entity.Property(e => e.Amount).HasColumnName("amount");
             entity.Property(e => e.State).HasColumnName("state");

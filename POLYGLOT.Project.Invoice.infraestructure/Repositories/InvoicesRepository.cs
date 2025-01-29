@@ -3,7 +3,6 @@ using POLYGLOT.Project.Invoice.application.Dto;
 using POLYGLOT.Project.Invoice.application.Interfaces;
 using POLYGLOT.Project.Invoice.application.Models;
 using POLYGLOT.Project.Invoice.application.Exceptions;
-using System.Linq.Expressions;
 
 namespace POLYGLOT.Project.Invoice.infraestructure.Repositories
 {
@@ -22,7 +21,7 @@ namespace POLYGLOT.Project.Invoice.infraestructure.Repositories
         {
             try
             {
-                InvoiceResponse res = new InvoiceResponse();
+                InvoiceResponse res = new();
                 var invoices = await _context.Invoices.ToListAsync();
                 res.Invoices = invoices;
                 return res;

@@ -1,3 +1,4 @@
+using POLYGLOT.Project.Pay.infraestructure.Extensions;
 using POLYGLOT.Project.Pay.infraestructure.Ioc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.ConfigureExceptionHandler();
 
 app.MapControllers();
 
