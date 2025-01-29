@@ -14,4 +14,6 @@ public partial class Invoice
     public int Secuencial { get; set; }
 
     public string? Description { get; set; }
+
+    public float Paid { get; set; }
 }

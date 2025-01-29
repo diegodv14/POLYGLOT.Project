@@ -34,6 +34,7 @@ public partial class DbInvoiceContext : DbContext
                 .HasColumnName("idInvoice");
             entity.Property(e => e.Amount).HasColumnName("amount");
             entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.Paid).HasColumnName("paid");
             entity.Property(e => e.Secuencial).HasColumnName("secuencial");
             entity.Property(e => e.State).HasColumnName("state");
         });

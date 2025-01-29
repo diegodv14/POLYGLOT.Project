@@ -45,7 +45,8 @@ namespace POLYGLOT.Project.Invoice.infraestructure.Repositories
                     Amount = (float)data.Amount,
                     Secuencial = data.Secuencial,
                     Description = data.Description,
-                    State = false
+                    State = false,
+                    Paid = 0
                 };
 
                 _context.Invoices.Add(newInvoice);

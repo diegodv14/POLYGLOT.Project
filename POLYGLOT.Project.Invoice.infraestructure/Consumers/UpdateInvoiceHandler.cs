@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using POLYGLOT.Project.Invoice.application.Dto;
 using POLYGLOT.Project.Invoice.application.Exceptions;
 using POLYGLOT.Project.Invoice.application.Models;
 using RabbitMQ.Client;
@@ -61,14 +62,14 @@ namespace POLYGLOT.Project.Invoice.infraestructure.Consumers
 
                         try
                         {
-                            var res = JsonSerializer.Deserialize<POLYGLOT.Project.Invoice.application.Models.Invoice>(message);
+                            var res = JsonSerializer.Deserialize<ConsumeInvoiceDto>(message);
 
                             using (var scope = __service.CreateScope())
                             {
                                 Console.WriteLine("Mensaje Recibido de RabbitMQ....");
                                 var dbContext = scope.ServiceProvider.GetRequiredService<DbInvoiceContext>();
 
-                                await UpdateInvoice((int)res!.IdInvoice, dbContext);
+                                await UpdateInvoice(res, dbContext);
                             }
 
                             await channel.BasicAckAsync(deliveryTag: ea.DeliveryTag, multiple: false);
@@ -95,12 +96,18 @@ namespace POLYGLOT.Project.Invoice.infraestructure.Consumers
             }
         }
 
-        private async Task<bool> UpdateInvoice(int idInvoice, DbInvoiceContext _context)
+        private async Task<bool> UpdateInvoice(ConsumeInvoiceDto res, DbInvoiceContext _context)
         {
             try 
             {
-                var invoice = await _context.Invoices.FirstOrDefaultAsync(s => s.IdInvoice == idInvoice) ?? throw new BaseCustomException($"La Factura con id {idInvoice} no existe", "", 404);
-                invoice.State = true;
+                var invoice = await _context.Invoices.FirstOrDefaultAsync(s => s.IdInvoice == res.idInvoice) ?? throw new BaseCustomException($"La Factura con id {res.idInvoice} no existe", "", 404);
+
+                invoice.Paid += res.paid;
+
+                if(invoice.Amount == invoice.Paid)
+                {
+                    invoice.State = true;
+                }
                 _context.Invoices.Update(invoice);
                 await _context.SaveChangesAsync();
 

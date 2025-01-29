@@ -4,6 +4,7 @@ using POLYGLOT.Project.Pay.application.Interfaces;
 using POLYGLOT.Project.Pay.application.Exceptions;
 using System.Text.Json;
 using POLYGLOT.Project.Pay.application.Models;
+using Newtonsoft.Json.Linq;
 
 namespace POLYGLOT.Project.Pay.infraestructure.Repositories
 {
@@ -42,7 +43,7 @@ namespace POLYGLOT.Project.Pay.infraestructure.Repositories
                 var content = await res.Content.ReadAsStringAsync();
                 var invoice = JsonSerializer.Deserialize<InvoiceDto>(content);
 
-                if (invoice!.amount < request.Amount) throw new BaseCustomException("El valor cancelado es mayor al de la factura","", 409);
+                if ((request.Amount + invoice!.paid) > invoice.amount) throw new BaseCustomException($"La deuda de esta factura es de {invoice.amount - invoice.paid}. Puede terminar de cancelarla completamente o pagar una parte","", 409);
 
                 var newPaid = new Operation()
                 {
@@ -63,7 +64,9 @@ namespace POLYGLOT.Project.Pay.infraestructure.Repositories
                 {
                     idInvoice = invoice.idInvoice,
                     amount = invoice.amount,
-                    state = true // Por definir estados facturas
+                    paid = request.Amount,
+                    secuencial = invoice.secuencial,
+                    state = invoice.state
                 };
 
                 var transactionInfo = new TransaccionDto()
