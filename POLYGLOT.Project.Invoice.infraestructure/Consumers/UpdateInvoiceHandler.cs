@@ -39,18 +39,18 @@ namespace POLYGLOT.Project.Invoice.infraestructure.Consumers
                     string queueName = _configuration["RabbitMQ:Queue"]
                         ?? throw new Exception("La cola de RabbitMQ no está definida.");
 
-                    await channel.QueueDeclareAsync(queue: queueName, durable: true, exclusive: false, autoDelete: false, arguments: null, cancellationToken: stoppingToken);
+                    await channel.QueueDeclareAsync(queue: queueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
 
                     string exchangeName = _configuration["RabbitMQ:Exchange"]
                         ?? throw new Exception("El exchange no está definido.");
                     string routingKey = _configuration["RabbitMQ:RoutingKey"]
                         ?? throw new Exception("La routingKey no está definida.");
 
-                    await channel.QueueBindAsync(queue: queueName, exchange: exchangeName, routingKey: routingKey, cancellationToken: stoppingToken);
+                    await channel.QueueBindAsync(queue: queueName, exchange: exchangeName, routingKey: routingKey);
 
                     var consumer = new AsyncEventingBasicConsumer(channel);
 
-                    await channel.BasicQosAsync(prefetchSize: 0, prefetchCount: 1, global: false, cancellationToken: stoppingToken);
+                    await channel.BasicQosAsync(prefetchSize: 0, prefetchCount: 1, global: false);
 
                     Console.WriteLine("Empezando a escuchar cola de RabbitMQ.......... \n");
                     consumer.ReceivedAsync += async (model, ea) =>
@@ -68,18 +68,18 @@ namespace POLYGLOT.Project.Invoice.infraestructure.Consumers
                                 Console.WriteLine("Mensaje Recibido de RabbitMQ....");
                                 var dbContext = scope.ServiceProvider.GetRequiredService<DbInvoiceContext>();
 
-                                await UpdateInvoice(res!.IdInvoice, dbContext);
+                                await UpdateInvoice((int)res!.IdInvoice, dbContext);
                             }
-                            await channel.BasicAckAsync(deliveryTag: ea.DeliveryTag, multiple: false, cancellationToken: stoppingToken);
+
+                            await channel.BasicAckAsync(deliveryTag: ea.DeliveryTag, multiple: false);
                         }
                         catch (Exception ex)
                         {
                             Console.WriteLine($"Error procesando mensaje {message}: {ex.Message}");
-                            await channel.BasicNackAsync(deliveryTag: ea.DeliveryTag, multiple: false, requeue: false, cancellationToken: stoppingToken);
                         }
                     };
 
-                    await channel.BasicConsumeAsync(queue: queueName, autoAck: false, consumer: consumer, cancellationToken: stoppingToken);
+                    await channel.BasicConsumeAsync(queue: queueName, autoAck: false, consumer: consumer);
                 }
                 catch (Exception ex)
                 {
@@ -100,7 +100,6 @@ namespace POLYGLOT.Project.Invoice.infraestructure.Consumers
             try 
             {
                 var invoice = await _context.Invoices.FirstOrDefaultAsync(s => s.IdInvoice == idInvoice) ?? throw new BaseCustomException($"La Factura con id {idInvoice} no existe", "", 404);
-
                 invoice.State = true;
                 _context.Invoices.Update(invoice);
                 await _context.SaveChangesAsync();
