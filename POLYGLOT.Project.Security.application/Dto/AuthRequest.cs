@@ -1,4 +1,4 @@
-﻿namespace POLYGLOT.Project.Security.application.Models
+﻿namespace POLYGLOT.Project.Security.application.Dto
 {
     public class AuthRequest
     {

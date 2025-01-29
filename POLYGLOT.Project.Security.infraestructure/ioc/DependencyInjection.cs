@@ -15,6 +15,7 @@ namespace POLYGLOT.Project.Security.infraestructure.Ioc
             services.AddDbContext<DbSecurityContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IGetToken, GetTokenRepository>();
+            services.AddScoped<IUser,  UserRepository>();
             services.Configure<JwtSettings>(opt =>
             {
                 opt.Issuer = configuration.GetSection("JWT:Issuer").Value;

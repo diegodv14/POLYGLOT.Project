@@ -2,8 +2,8 @@
 
 namespace POLYGLOT.Project.Security.application.Interfaces
 {
-    public interface IGetToken
+    public interface IUser
     {
-        Task<AuthResponse> GetToken(AuthRequest request);
+        Task<ResponseSuccess> AddUser(AuthRequest data);
     }
 }

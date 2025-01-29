@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using POLYGLOT.Project.Security.application.Dto;
@@ -26,9 +27,18 @@ namespace POLYGLOT.Project.Security.infraestructure.Repositories
         {
             try
             {
-                var access = await _context.Users.FirstOrDefaultAsync(x => x.Username == request.Username && x.Password == request.Password) ?? throw new BaseCustomException("No existe el usuario que coincida el username y el password.", "", 404);
+                var user = await _context.Users.FirstOrDefaultAsync(x => x.Username == request.Username)
+                   ?? throw new BaseCustomException("No existe un usuario con ese nombre de usuario.", "", 404);
 
-                var token = CreateToken(access);
+                var passwordHasher = new PasswordHasher<User>();
+                var passwordVerificationResult = passwordHasher.VerifyHashedPassword(user, user.Password, request.Password);
+
+                if (passwordVerificationResult == PasswordVerificationResult.Failed)
+                {
+                    throw new BaseCustomException("La contraseña proporcionada es incorrecta.", "", 401);
+                }
+
+                var token = CreateToken(user);
 
                 var res = new AuthResponse()
                 {
