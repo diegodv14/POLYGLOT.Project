@@ -1,4 +1,4 @@
-using POLYGLOT.Project.Pay.infraestructure.ioc;
+using POLYGLOT.Project.Pay.infraestructure.Ioc;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -25,5 +25,19 @@ namespace POLYGLOT.Project.Invoice.api.Controllers
             var res = await _invoices.GetInvoices();
             return Ok(res);
         }
+
+
+        [HttpGet]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(POLYGLOT.Project.Invoice.application.Models.Invoice), 200)]
+        [ProducesResponseType(typeof(ResponseError), 500)]
+        [ProducesResponseType(typeof(ResponseError), 404)]
+        [Route("/PolyGlot/Invoices/CheckInvoice")]
+        public async Task<ActionResult<POLYGLOT.Project.Invoice.application.Models.Invoice>> CheckInvoiceStatus([FromQuery] int idInvoice)
+        {
+            var res = await _invoices.CheckInvoice(idInvoice);
+            return Ok(res);
+        }
     }
 }

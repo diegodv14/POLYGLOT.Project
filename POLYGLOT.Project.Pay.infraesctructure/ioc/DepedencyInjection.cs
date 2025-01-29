@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace POLYGLOT.Project.Pay.infraestructure.ioc
+namespace POLYGLOT.Project.Pay.infraestructure.Ioc
 {
     public static class DepedencyInjection
     {
@@ -15,6 +15,7 @@ namespace POLYGLOT.Project.Pay.infraestructure.ioc
             }
 
             services.AddDbContext<DbContext>(opt => opt.UseMySQL(connectionString));
+            services.AddHttpClient();
             return services;
         }
     }
