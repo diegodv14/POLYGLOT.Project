@@ -1,5 +1,10 @@
 El proyecto usa DB en Contenedores Docker, con volumenes de manera local.
 
+# Configuración descentralizada
+
+   1. Contenedor
+      docker run -d --name config-server-test -p 8848:8848 -p 9848:9848 -v nacos_data:/home/nacos/data -e MODE=standalone nacos/nacos-server:latest 
+
 # Rabbit MQ
 
    1. Contenedor
