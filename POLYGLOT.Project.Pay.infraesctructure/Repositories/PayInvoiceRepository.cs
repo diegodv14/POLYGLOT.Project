@@ -35,7 +35,7 @@ namespace POLYGLOT.Project.Pay.infraestructure.Repositories
                 {
                     Headers =
                     {
-                        { "Authorization", $"Bearer {token}" } 
+                        { "Authorization", $"Bearer {token}" }
                     }
                 };
 
@@ -50,6 +50,8 @@ namespace POLYGLOT.Project.Pay.infraestructure.Repositories
 
                 var content = await res.Content.ReadAsStringAsync();
                 var invoice = JsonSerializer.Deserialize<InvoiceDto>(content);
+
+                if (invoice.amount == invoice.paid) throw new BaseCustomException($"La deuda de esta factura ya se encuentra pagada.", "", 409);
 
                 if ((request.Amount + invoice!.paid) > invoice.amount) throw new BaseCustomException($"La deuda de esta factura es de {invoice.amount - invoice.paid}. Puede terminar de cancelarla completamente o pagar una parte","", 409);
 
