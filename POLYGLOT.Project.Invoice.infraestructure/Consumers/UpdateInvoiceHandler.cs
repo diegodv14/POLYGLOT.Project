@@ -32,7 +32,7 @@ namespace POLYGLOT.Project.Invoice.infraestructure.Consumers
             try
             {
                 _connection = await _factory.CreateConnectionAsync(stoppingToken);
-                _channel = await _connection.CreateChannelAsync();
+                _channel = await _connection.CreateChannelAsync(cancellationToken: stoppingToken);
 
                 string queueName = _configuration["RabbitMQ:Queue"]
                     ?? throw new Exception("La cola de RabbitMQ no está definida.");
@@ -52,7 +52,7 @@ namespace POLYGLOT.Project.Invoice.infraestructure.Consumers
                 var consumer = new AsyncEventingBasicConsumer(_channel);
                 consumer.ReceivedAsync += async (model, ea) => await ProcessMessage(ea);
 
-                await _channel.BasicConsumeAsync(queue: queueName, autoAck: false, consumer: consumer);
+                await _channel.BasicConsumeAsync(queue: queueName, autoAck: false, consumer: consumer, cancellationToken: stoppingToken);
 
                 while (!stoppingToken.IsCancellationRequested)
                 {

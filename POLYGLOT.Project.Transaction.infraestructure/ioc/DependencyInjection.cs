@@ -4,7 +4,9 @@ using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using POLYGLOT.Project.Transaction.application;
 using POLYGLOT.Project.Transaction.application.Interfaces;
+using POLYGLOT.Project.Transaction.infraestructure.Consumer;
 using POLYGLOT.Project.Transaction.infraestructure.Repositories;
+using RabbitMQ.Client;
 
 
 namespace POLYGLOT.Project.Transaction.infraestructure.ioc
@@ -34,6 +36,19 @@ namespace POLYGLOT.Project.Transaction.infraestructure.ioc
                 return client.GetDatabase(mongoSettings.DatabaseName);
             });
             services.AddScoped<ITransaccion, TransaccionRepository>();
+
+            services.AddHostedService<AddTransaccionHandlerConsumer>();
+
+            services.AddSingleton<IConnectionFactory>(sp =>
+            {
+                return new ConnectionFactory
+                {
+                    HostName = configuration["RabbitMQ:Host"],
+                    UserName = configuration["RabbitMQ:User"],
+                    Password = configuration["RabbitMQ:Pass"],
+                    VirtualHost = configuration["RabbitMQ:VirtualHost"],
+                };
+            });
 
             return services;
         }
