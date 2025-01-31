@@ -8,6 +8,7 @@ using RabbitMQ.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.OpenApi.Models;
 
 namespace POLYGLOT.Project.Pay.infraestructure.Ioc
 {
@@ -43,6 +44,34 @@ namespace POLYGLOT.Project.Pay.infraestructure.Ioc
                             ValidateAudience = false
                         };
                     });
+
+            services.AddSwaggerGen(options =>
+            {
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Por favor inserte el JWT con Bearer en el campo",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] { }
+                    }
+                });
+            });
 
             services.AddScoped<IRabbitMQ, RabbitMQRepository>();
             services.AddScoped<IPayInvoice, PayInvoiceRepository>();
