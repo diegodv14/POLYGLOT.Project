@@ -1,6 +1,7 @@
 
 #### Settings For Nacos
 
+```json
 {
     "cn": {
          "db-invoice-pg": "data source=localhost;initial catalog=db_invoice;user id=invoicePrueba;password=prueba;Encrypt=True;TrustServerCertificate=True;",
