@@ -34,7 +34,7 @@ namespace POLYGLOT.Project.Invoice.infraestructure.Consumers
                 _connection = await _factory.CreateConnectionAsync(stoppingToken);
                 _channel = await _connection.CreateChannelAsync(cancellationToken: stoppingToken);
 
-                string queueName = _configuration["RabbitMQ:Queue"]
+                string queueName = _configuration["RabbitMQ:QueueInvoice"]
                     ?? throw new Exception("La cola de RabbitMQ no está definida.");
 
                 string exchangeName = _configuration["RabbitMQ:Exchange"]
