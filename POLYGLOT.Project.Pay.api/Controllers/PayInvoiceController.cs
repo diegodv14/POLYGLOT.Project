@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using POLYGLOT.Project.Pay.api.Controllers.Base;
 using POLYGLOT.Project.Pay.application.Dto;
 using POLYGLOT.Project.Pay.application.Exceptions;
 using POLYGLOT.Project.Pay.application.Interfaces;
 
 namespace POLYGLOT.Project.Pay.api.Controllers
 {
-    public class PayInvoiceController : ControllerBase
+    public class PayInvoiceController : BaseController
     {
         private readonly IPayInvoice _pay;
         public PayInvoiceController(IPayInvoice pay) 

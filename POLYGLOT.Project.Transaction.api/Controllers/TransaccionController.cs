@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using POLYGLOT.Project.Transaction.api.Controllers.Base;
 using POLYGLOT.Project.Transaction.application.Dto;
 using POLYGLOT.Project.Transaction.application.Exceptions;
 using POLYGLOT.Project.Transaction.application.Interfaces;
 
 namespace POLYGLOT.Project.Transaction.api.Controllers
 {
-    public class TransaccionController: ControllerBase
+    public class TransaccionController: BaseController
     {
         private readonly ITransaccion _transaccion;
         public TransaccionController(ITransaccion transaccion) 

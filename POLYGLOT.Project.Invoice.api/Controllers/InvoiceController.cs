@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using POLYGLOT.Project.Invoice.api.Controllers.Base;
 using POLYGLOT.Project.Invoice.application.Dto;
 using POLYGLOT.Project.Invoice.application.Exceptions;
 using POLYGLOT.Project.Invoice.application.Interfaces;
 
 namespace POLYGLOT.Project.Invoice.api.Controllers
 {
-    public class InvoiceController : ControllerBase
+    public class InvoiceController : BaseController
     {
         private readonly IInvoices _invoices;
         public InvoiceController(IInvoices invoices)

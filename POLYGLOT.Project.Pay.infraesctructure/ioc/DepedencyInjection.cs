@@ -5,6 +5,9 @@ using POLYGLOT.Project.Pay.application.Interfaces;
 using POLYGLOT.Project.Pay.application.Models;
 using POLYGLOT.Project.Pay.infraestructure.Repositories;
 using RabbitMQ.Client;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace POLYGLOT.Project.Pay.infraestructure.Ioc
 {
@@ -28,6 +31,18 @@ namespace POLYGLOT.Project.Pay.infraestructure.Ioc
                     VirtualHost = configuration["RabbitMQ:VirtualHost"],
                 };
             });
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"])),
+                            ValidateIssuer = false,
+                            ValidateAudience = false
+                        };
+                    });
 
             services.AddScoped<IRabbitMQ, RabbitMQRepository>();
             services.AddScoped<IPayInvoice, PayInvoiceRepository>();

@@ -7,6 +7,9 @@ using POLYGLOT.Project.Transaction.application.Interfaces;
 using POLYGLOT.Project.Transaction.infraestructure.Consumer;
 using POLYGLOT.Project.Transaction.infraestructure.Repositories;
 using RabbitMQ.Client;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 
 namespace POLYGLOT.Project.Transaction.infraestructure.ioc
@@ -15,6 +18,18 @@ namespace POLYGLOT.Project.Transaction.infraestructure.ioc
     {
         public static IServiceCollection AddInfraestructure(this IServiceCollection services, IConfiguration configuration)
         {
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"])),
+                            ValidateIssuer = false,
+                            ValidateAudience = false
+                        };
+                    });
 
             services.Configure<MongoSettings>(opt =>
             {

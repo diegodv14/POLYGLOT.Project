@@ -1,12 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using POLYGLOT.Project.Invoice.application.Interfaces;
 using POLYGLOT.Project.Invoice.application.Models;
 using POLYGLOT.Project.Invoice.infraestructure.Consumers;
 using POLYGLOT.Project.Invoice.infraestructure.Repositories;
 using RabbitMQ.Client;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace POLYGLOT.Project.Invoice.infraestructure.Ioc
 {
@@ -25,7 +27,17 @@ namespace POLYGLOT.Project.Invoice.infraestructure.Ioc
                     VirtualHost = configuration["RabbitMQ:VirtualHost"],
                 };
             });
-
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"])),
+                            ValidateIssuer = false,
+                            ValidateAudience = false
+                        };
+                    });
             services.AddHostedService<UpdateInvoiceHandler>();
             services.AddScoped<IInvoices, InvoicesRepository>();
             return services;

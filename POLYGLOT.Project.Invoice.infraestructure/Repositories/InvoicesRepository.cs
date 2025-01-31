@@ -69,7 +69,7 @@ namespace POLYGLOT.Project.Invoice.infraestructure.Repositories
         {
             try
             {
-                var invoice = await _context.Invoices.FirstOrDefaultAsync(s => s.IdInvoice == secuencial) ?? throw new BaseCustomException($"La factura con secuencial {secuencial} no esta registrada.", "", 404);
+                var invoice = await _context.Invoices.FirstOrDefaultAsync(s => s.Secuencial == secuencial) ?? throw new BaseCustomException($"La factura con secuencial {secuencial} no esta registrada.", "", 404);
                 return invoice;
             }
 
