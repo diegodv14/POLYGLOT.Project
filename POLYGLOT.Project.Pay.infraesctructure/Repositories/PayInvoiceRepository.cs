@@ -29,7 +29,7 @@ namespace POLYGLOT.Project.Pay.infraestructure.Repositories
             try
             {
 
-                var urlVerifyInvocice = _configuration.GetConnectionString("CheckInvoiceApi") + $"?secuencial={request.Secuencial}";
+                var urlVerifyInvocice = _configuration["cn:checkInvoiceApi"] + $"?secuencial={request.Secuencial}";
 
                 var requestMessage = new HttpRequestMessage(HttpMethod.Get, urlVerifyInvocice)
                 {

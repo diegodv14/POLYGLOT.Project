@@ -40,7 +40,7 @@ namespace POLYGLOT.Project.Invoice.infraestructure.Consumers
                 string exchangeName = _configuration["RabbitMQ:Exchange"]
                     ?? throw new Exception("El exchange no está definido.");
 
-                string routingKey = _configuration["RabbitMQ:RoutingKey"]
+                string routingKey = _configuration["RabbitMQ:RoutingKeyInvoice"]
                     ?? throw new Exception("La routingKey no está definida.");
 
                 await _channel.QueueDeclareAsync(queue: queueName, durable: true, exclusive: false, autoDelete: false, arguments: null, cancellationToken: stoppingToken);

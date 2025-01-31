@@ -17,7 +17,7 @@ namespace POLYGLOT.Project.Invoice.infraestructure.Ioc
     {
         public static IServiceCollection AddInfraestructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<DbInvoiceContext>(opt => opt.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<DbInvoiceContext>(opt => opt.UseNpgsql(configuration["cn:db-invoice-pg"]));
             services.AddSingleton<IConnectionFactory>(sp =>
             {
                 return new ConnectionFactory
@@ -34,7 +34,7 @@ namespace POLYGLOT.Project.Invoice.infraestructure.Ioc
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
                             ValidateIssuerSigningKey = true,
-                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"])),
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:key"])),
                             ValidateIssuer = false,
                             ValidateAudience = false
                         };

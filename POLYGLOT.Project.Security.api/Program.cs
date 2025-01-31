@@ -3,6 +3,9 @@ using POLYGLOT.Project.Security.infraestructure.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+builder.Host.ConfigureAppConfiguration((host, config) => config.AddNacosConfiguration(config.Build().GetSection("nacos")));
+
 builder.Services.AddControllers();
 builder.Services.AddInfraestructure(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();

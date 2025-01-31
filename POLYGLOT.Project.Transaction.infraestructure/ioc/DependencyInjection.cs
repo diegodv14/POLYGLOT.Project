@@ -26,7 +26,7 @@ namespace POLYGLOT.Project.Transaction.infraestructure.ioc
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
                             ValidateIssuerSigningKey = true,
-                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"])),
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:key"])),
                             ValidateIssuer = false,
                             ValidateAudience = false
                         };
@@ -34,8 +34,8 @@ namespace POLYGLOT.Project.Transaction.infraestructure.ioc
 
             services.Configure<MongoSettings>(opt =>
             {
-                opt.ConnectionString = configuration["MongoSettings:ConnectionString"];
-                opt.DatabaseName = configuration["MongoSettings:DatabaseName"];
+                opt.ConnectionString = configuration["cn:db-mongo-transaccion"];
+                opt.DatabaseName = configuration["cn:databaseName"];
             });
 
 

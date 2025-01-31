@@ -12,17 +12,18 @@ namespace POLYGLOT.Project.Security.infraestructure.Ioc
     {
         public static IServiceCollection AddInfraestructure(this IServiceCollection services, IConfiguration configuration)
         {
+
             services.AddDbContext<DbSecurityContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            options.UseSqlServer(configuration["cn:db-security-sqls"]));
             services.AddScoped<IGetToken, GetTokenRepository>();
             services.AddScoped<IUser,  UserRepository>();
             services.Configure<JwtSettings>(opt =>
             {
-                opt.Issuer = configuration.GetSection("JWT:Issuer").Value;
-                opt.Key = configuration.GetSection("JWT:Key").Value;
-                opt.Enabled = bool.Parse(configuration.GetSection("JWT:Enabled").Value);
-                opt.Expiration = int.Parse(configuration.GetSection("JWT:Expiration").Value);
-                opt.Audience = configuration.GetSection("JWT:Audience").Value;
+                opt.Issuer = configuration.GetSection("JWT:issuer").Value;
+                opt.Key = configuration.GetSection("JWT:key").Value;
+                opt.Enabled = bool.Parse(configuration.GetSection("JWT:enabled").Value);
+                opt.Expiration = int.Parse(configuration.GetSection("JWT:expiration").Value);
+                opt.Audience = configuration.GetSection("JWT:audience").Value;
 
             });
             return services;

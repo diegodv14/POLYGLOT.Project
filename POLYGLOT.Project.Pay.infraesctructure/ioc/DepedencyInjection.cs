@@ -16,11 +16,12 @@ namespace POLYGLOT.Project.Pay.infraestructure.Ioc
     {
         public static IServiceCollection AddInfraestructure(this IServiceCollection services, IConfiguration configuration)
         {
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            var connectionString = configuration["cn:db-pay-mqsl"];
             if (string.IsNullOrEmpty(connectionString))
             {
                 throw new ArgumentNullException(nameof(connectionString), "La cadena de conexiòn no esta definida Micro.Pay");
             }
+            services.AddDbContext<DbOperationContext>(opt => opt.UseMySQL(connectionString));
 
             services.AddSingleton<IConnectionFactory>(sp =>
             {
@@ -39,7 +40,7 @@ namespace POLYGLOT.Project.Pay.infraestructure.Ioc
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
                             ValidateIssuerSigningKey = true,
-                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"])),
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:key"])),
                             ValidateIssuer = false,
                             ValidateAudience = false
                         };
@@ -75,7 +76,6 @@ namespace POLYGLOT.Project.Pay.infraestructure.Ioc
 
             services.AddScoped<IRabbitMQ, RabbitMQRepository>();
             services.AddScoped<IPayInvoice, PayInvoiceRepository>();
-            services.AddDbContext<DbOperationContext>(opt => opt.UseMySQL(connectionString));
             services.AddHttpClient();
             return services;
         }

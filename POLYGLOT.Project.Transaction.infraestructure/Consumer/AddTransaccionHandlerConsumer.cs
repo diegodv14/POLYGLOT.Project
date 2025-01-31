@@ -39,7 +39,7 @@ namespace POLYGLOT.Project.Transaction.infraestructure.Consumer
                 string exchangeName = _configuration["RabbitMQ:Exchange"]
                     ?? throw new Exception("El exchange no está definido.");
 
-                string routingKey = _configuration["RabbitMQ:RoutingKey"]
+                string routingKey = _configuration["RabbitMQ:RoutingKeyTransaccion"]
                     ?? throw new Exception("La routingKey no está definida.");
 
                 await _channel.QueueDeclareAsync(queue: queueName, durable: true, exclusive: false, autoDelete: false, arguments: null, cancellationToken: stoppingToken);
@@ -93,7 +93,7 @@ namespace POLYGLOT.Project.Transaction.infraestructure.Consumer
         {
             try
             {
-                var collection = _context.GetCollection<TransactionModel>(_configuration["MongoSettings:Collection"]);
+                var collection = _context.GetCollection<TransactionModel>(_configuration["cn:collection"]);
 
                 await collection.InsertOneAsync(new TransactionModel()
                 {

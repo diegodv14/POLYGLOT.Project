@@ -22,7 +22,7 @@ namespace POLYGLOT.Project.Transaction.infraestructure.Repositories
             GetTransaccionResponse res = new();
             try
             {
-                var collection = _context.GetCollection<TransactionModel>(_configuration["MongoSettings:Collection"]);
+                var collection = _context.GetCollection<TransactionModel>(_configuration["cn:collection"]);
                 res.Transacciones = await collection.Find(_ => true).ToListAsync();
                 return res;
             }
