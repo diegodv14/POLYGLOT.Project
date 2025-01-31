@@ -14,8 +14,4 @@
     <ProjectReference Include="..\POLYGLOT.Project.Transaction.infraestructure\POLYGLOT.Project.Transaction.infraestructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>

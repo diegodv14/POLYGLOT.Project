@@ -3,6 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using POLYGLOT.Project.Transaction.application;
+using POLYGLOT.Project.Transaction.application.Interfaces;
+using POLYGLOT.Project.Transaction.infraestructure.Repositories;
 
 
 namespace POLYGLOT.Project.Transaction.infraestructure.ioc
@@ -31,6 +33,7 @@ namespace POLYGLOT.Project.Transaction.infraestructure.ioc
                 var mongoSettings = serviceProvider.GetRequiredService<IOptions<MongoSettings>>().Value;
                 return client.GetDatabase(mongoSettings.DatabaseName);
             });
+            services.AddScoped<ITransaccion, TransaccionRepository>();
 
             return services;
         }

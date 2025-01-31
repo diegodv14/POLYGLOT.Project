@@ -1,4 +1,5 @@
 using POLYGLOT.Project.Transaction.infraestructure.ioc;
+using POLYGLOT.Project.Transaction.infraestructure.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,5 +22,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.ConfigureExceptionHandler();
 
 app.Run();
