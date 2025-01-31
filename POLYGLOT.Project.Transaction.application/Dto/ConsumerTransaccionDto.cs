@@ -2,8 +2,8 @@
 {
     public class ConsumerTransaccionDto
     {
-        public int idInvoice { get; set; }
-        public decimal amount { get; set; }
-        public DateTime date { get; set; }
+        public int IdInvoice { get; set; }
+        public decimal Amount { get; set; }
+        public DateTime Date { get; set; }
     }
 }

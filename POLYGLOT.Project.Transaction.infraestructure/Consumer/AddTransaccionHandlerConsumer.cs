@@ -97,9 +97,9 @@ namespace POLYGLOT.Project.Transaction.infraestructure.Consumer
 
                 await collection.InsertOneAsync(new TransactionModel()
                 {
-                    IdInvoice = res.idInvoice,
-                    Amount = res.amount,
-                    Date = res.date
+                    IdInvoice = res.IdInvoice,
+                    Amount = res.Amount,
+                    Date = res.Date
                 });
 
                 return true;

@@ -4,7 +4,6 @@ using POLYGLOT.Project.Pay.application.Interfaces;
 using POLYGLOT.Project.Pay.application.Exceptions;
 using System.Text.Json;
 using POLYGLOT.Project.Pay.application.Models;
-using Newtonsoft.Json.Linq;
 
 namespace POLYGLOT.Project.Pay.infraestructure.Repositories
 {
