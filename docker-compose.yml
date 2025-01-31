@@ -1,0 +1,127 @@
+version: '3.8'
+
+networks:
+  app_network:
+
+volumes:
+  nacos_data:
+    external: true
+    name: nacos_data
+  rabbitmq_data:
+    external: true
+    name: rabbitmq_data
+  mysql_data:
+    external: true
+    name: mysql_data
+  sqlserver_data:
+    external: true
+    name: sqlserver_data
+  postgres_data:
+    external: true
+    name: postgres-data
+  mongo_data:
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    networks:
+      - app_network
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+    volumes:
+      - mongo_data:/data/db
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    restart: always
+    networks:
+      - app_network
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_URL: "mongodb://admin:admin123@mongodb:27017/"
+      ME_CONFIG_MONGODB_ENABLE_ADMIN: "true"
+
+  config-server:
+    image: nacos/nacos-server:latest
+    container_name: config-server-test
+    restart: always
+    networks:
+      - app_network
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+    environment:
+      MODE: standalone
+    volumes:
+      - nacos_data:/home/nacos/data
+
+  # RabbitMQ
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq-container
+    restart: always
+    networks:
+      - app_network
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: invoiceUser
+      RABBITMQ_DEFAULT_PASS: pruebaInvoice
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+  # MySQL
+  mysql:
+    image: mysql:latest
+    container_name: mysql-container
+    restart: always
+    networks:
+      - app_network
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: prueba
+      MYSQL_DATABASE: db_operation
+      MYSQL_USER: securityPrueba
+      MYSQL_PASSWORD: security
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  # SQL Server
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver-container
+    restart: always
+    networks:
+      - app_network
+    ports:
+      - "1433:1433"
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "ben10alienforce*"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+
+  # PostgreSQL
+  postgres:
+    image: postgres:latest
+    container_name: postgres-container
+    restart: always
+    networks:
+      - app_network
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: invoicePrueba
+      POSTGRES_PASSWORD: prueba
+      POSTGRES_DB: db_invoice
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
