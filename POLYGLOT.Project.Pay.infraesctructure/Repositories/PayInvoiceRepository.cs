@@ -22,7 +22,7 @@ namespace POLYGLOT.Project.Pay.infraestructure.Repositories
             _rabbitmq = rabbitmq;
         }
 
-        public async Task<ResponseSuccess> HandlePayInvoice(PayInvoiceRequest request)
+        public async Task<ResponseSuccess> HandlePayInvoice(PayInvoiceRequest request, string token)
         {
 
             using var transaction = await _context.Database.BeginTransactionAsync();
@@ -31,7 +31,16 @@ namespace POLYGLOT.Project.Pay.infraestructure.Repositories
             {
 
                 var urlVerifyInvocice = _configuration.GetConnectionString("CheckInvoiceApi") + $"?secuencial={request.Secuencial}";
-                var res = await _http.GetAsync(urlVerifyInvocice);
+
+                var requestMessage = new HttpRequestMessage(HttpMethod.Get, urlVerifyInvocice)
+                {
+                    Headers =
+                    {
+                        { "Authorization", $"Bearer {token}" } 
+                    }
+                };
+
+                var res = await _http.SendAsync(requestMessage);
 
                 if (!res.IsSuccessStatusCode)
                 {

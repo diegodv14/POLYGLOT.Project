@@ -23,7 +23,8 @@ namespace POLYGLOT.Project.Pay.api.Controllers
         [Route("/PolyGlot/Pay/DoPay")]
         public async Task<ActionResult<ResponseSuccess>> DoPay([FromBody] PayInvoiceRequest data)
         {
-            var res = await _pay.HandlePayInvoice(data);
+            var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            var res = await _pay.HandlePayInvoice(data, token);
             return Ok(res);
         }
     }
