@@ -1,25 +1,7 @@
-version: '3.8'
-
 networks:
   app_network:
 
-volumes:
-  nacos_data:
-    external: true
-    name: nacos_data
-  rabbitmq_data:
-    external: true
-    name: rabbitmq_data
-  mysql_data:
-    external: true
-    name: mysql_data
-  sqlserver_data:
-    external: true
-    name: sqlserver_data
-  postgres_data:
-    external: true
-    name: postgres-data
-  mongo_data:
+
 
 services:
   mongodb:
@@ -59,6 +41,10 @@ services:
       - "9848:9848"
     environment:
       MODE: standalone
+      NACOS_AUTH_TOKEN: admin123
+      NACOS_AUTH_IDENTITY_KEY: admin
+      NACOS_AUTH_IDENTITY_VALUE: admin
+      NACOS_SERVER_PORT: 8848
     volumes:
       - nacos_data:/home/nacos/data
 
@@ -125,3 +111,11 @@ services:
       POSTGRES_DB: db_invoice
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  nacos_data:
+  rabbitmq_data:
+  mysql_data:
+  sqlserver_data:
+  postgres_data:
+  mongo_data:
