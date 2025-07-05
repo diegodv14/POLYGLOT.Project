@@ -23,6 +23,8 @@ spec:
           ports:
             - containerPort: 8080
           env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Development"
             - name: nacos__ServerAddresses__0
               value: "http://nacos-server:8848"
             - name: nacos__Namespace
