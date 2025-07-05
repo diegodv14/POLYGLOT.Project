@@ -3,11 +3,11 @@ using POLYGLOT.Project.Pay.infraestructure.Ioc;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.ConfigureAppConfiguration((host, config) => config.AddNacosConfiguration(config.Build().GetSection("nacos")));
+builder.Host.UseNacosConfig(section: "nacos");
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddInfraestructure(builder.Configuration);
+builder.Services.AddInfraestructure(builder.Configuration); 
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
