@@ -37,16 +37,19 @@ services:
     networks:
       - app_network
     ports:
-      - "8848:8848"
+      - "8848:8080"
       - "9848:9848"
     environment:
       MODE: standalone
-      NACOS_AUTH_TOKEN: admin123
-      NACOS_AUTH_IDENTITY_KEY: admin
+      NACOS_AUTH_ENABLE: true
+      NACOS_AUTH_TOKEN_EXPIRE_SECONDS: 18000
+      NACOS_AUTH_TOKEN: IPwNVKArF29c+WkcRskAFkW2o/snZkCNyoVNbbaTmrA=
+      NACOS_AUTH_PLUGIN_NACOS_TOKEN_SECRET_KEY: dW93bVJrU2FXcGp6eHdEbWlEZkE5d1d4N0pZVUZTdHk=
+      NACOS_AUTH_IDENTITY_KEY: username
       NACOS_AUTH_IDENTITY_VALUE: admin
-      NACOS_SERVER_PORT: 8848
     volumes:
       - nacos_data:/home/nacos/data
+
 
   # RabbitMQ
   rabbitmq:
