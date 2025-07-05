@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: pay-api
+  name: pay-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pay-api
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: pay-api
+    spec:
+      containers:
+        - image: diegodev41/polyglot-pay-api:latest
+          name: polyglot-pay-api
+          ports:
+            - containerPort: 8080
+          env:
+            - name: nacos__ServerAddresses__0
+              value: "http://nacos-server:8848"
+            - name: nacos__Namespace
+              value: "polyglot"
+          resources: {}
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: pay-api
+  name: pay-api
+spec:
+  ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: pay-api
+  type: ClusterIP
+status:
+  loadBalancer: {}
