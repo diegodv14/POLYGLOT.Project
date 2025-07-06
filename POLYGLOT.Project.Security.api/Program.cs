@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using POLYGLOT.Project.Security.infraestructure.Ioc;
 using POLYGLOT.Project.Security.infraestructure.Middlewares;
 
@@ -10,6 +11,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<POLYGLOT.Project.Security.application.Models.DbSecurityContext>();
+    context.Database.Migrate();
+}
 
 if (app.Environment.IsDevelopment())
 {

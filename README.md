@@ -3,16 +3,16 @@
 ```json
 {
   "cn": {
-    "db-invoice-pg": "data source=localhost;initial catalog=db_invoice;user id=invoicePrueba;password=prueba;Encrypt=True;TrustServerCertificate=True;",
-    "db-pay-mqsl": "Server=localhost;Port=3306;Database=db_operation;User=securityPrueba;Password=security;SslMode=Preferred;",
-    "db-security-sqls": "Server=localhost,1433;Database=db_security;User Id=sa;Password=ben10alienforce*;Trusted_Connection=False;TrustServerCertificate=True;",
-    "db-mongo-transaccion": "mongodb://admin:admin123@localhost:27017/",
+    "db-invoice-pg": "data source=postgres;initial catalog=db_invoice;user id=invoicePrueba;password=prueba;Encrypt=True;TrustServerCertificate=True;",
+    "db-security-sqls": "Server=sqlserver,1433;Database=db_security;User Id=sa;Password=ben10alienforce*;Trusted_Connection=False;TrustServerCertificate=True;",
+    "db-mongo-transaccion": "mongodb://admin:admin123@mongodb:27017/",
     "databaseName": "db_transaccion",
     "collection": "transaccion",
-    "checkInvoiceApi": "http://localhost:5022/PolyGlot/Invoices/CheckInvoice"
+    "db-pay-mqsl": "Server=mysql;Port=3306;Database=db_operation;User=securityPrueba;Password=security;SslMode=Preferred;",
+    "checkInvoiceApi": "http://invoice-api:8080/PolyGlot/Invoices/CheckInvoice"
   },
   "RabbitMQ": {
-    "Host": "localhost",
+    "Host": "rabbitmq",
     "User": "invoiceUser",
     "Pass": "pruebaInvoice",
     "VirtualHost": "/",
@@ -31,3 +31,7 @@
   }
 }
 ```
+
+SQL SERVER
+
+/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'ben10alienforce\*' -Q 'CREATE DATABASE db_security' -C

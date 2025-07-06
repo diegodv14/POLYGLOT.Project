@@ -14,7 +14,14 @@ namespace POLYGLOT.Project.Security.infraestructure.Ioc
         {
 
             services.AddDbContext<DbSecurityContext>(options =>
-            options.UseSqlServer(configuration["cn:db-security-sqls"]));
+                options.UseSqlServer(configuration["cn:db-security-sqls"],
+                sqlServerOptionsAction: sqlOptions =>
+                {
+                    sqlOptions.EnableRetryOnFailure(
+                        maxRetryCount: 5,
+                        maxRetryDelay: TimeSpan.FromSeconds(30),
+                        errorNumbersToAdd: null);
+                }));
             services.AddScoped<IGetToken, GetTokenRepository>();
             services.AddScoped<IUser,  UserRepository>();
             services.Configure<JwtSettings>(opt =>
