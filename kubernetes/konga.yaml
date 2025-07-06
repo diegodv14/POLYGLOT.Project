@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: konga
+  labels:
+    app: konga
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: konga
+  template:
+    metadata:
+      labels:
+        app: konga
+    spec:
+      containers:
+        - name: konga
+          image: pantsel/konga:latest
+          env:
+            - name: "KONGA_NODE_URL"
+              value: "http://kong-kong-admin.kong.svc:8001"
+          ports:
+            - containerPort: 1337
+              protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: konga
+  labels:
+    app: konga
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 1337
+  selector:
+    app: konga

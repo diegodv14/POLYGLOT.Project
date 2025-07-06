@@ -35,3 +35,7 @@
 Forward Kong Gateway
 
 kubectl port-forward --namespace kong svc/kong-kong-proxy 8080:80
+
+Kong Url
+
+http://kong-kong-admin.kong.svc:8001
