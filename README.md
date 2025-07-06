@@ -32,6 +32,6 @@
 }
 ```
 
-SQL SERVER
+Forward Kong Gateway
 
-/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'ben10alienforce\*' -Q 'CREATE DATABASE db_security' -C
+kubectl port-forward --namespace kong svc/kong-kong-proxy 8080:80

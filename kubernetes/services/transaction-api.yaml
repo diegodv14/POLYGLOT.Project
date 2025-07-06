@@ -59,3 +59,22 @@ spec:
   type: ClusterIP
 status:
   loadBalancer: {}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: transaction-api-ingress
+  annotations:
+    konghq.com/strip-path: "true"
+spec:
+  ingressClassName: kong
+  rules:
+    - http:
+        paths:
+          - path: /transactions
+            pathType: Prefix
+            backend:
+              service:
+                name: transaction-api
+                port:
+                  number: 8080

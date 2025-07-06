@@ -59,3 +59,22 @@ spec:
   type: ClusterIP
 status:
   loadBalancer: {}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pay-api-ingress
+  annotations:
+    konghq.com/strip-path: "true"
+spec:
+  ingressClassName: kong
+  rules:
+    - http:
+        paths:
+          - path: /payments
+            pathType: Prefix
+            backend:
+              service:
+                name: pay-api
+                port:
+                  number: 8080
