@@ -17,9 +17,19 @@ spec:
       labels:
         app: security-api
     spec:
+      initContainers:
+        - name: wait-for-nacos
+          image: busybox:1.28
+          command:
+            [
+              "sh",
+              "-c",
+              "until nslookup nacos-server; do echo 'Waiting for Nacos DNS'; sleep 2; done; until wget -q --spider http://nacos-server:8848/nacos; do echo 'Waiting for Nacos service'; sleep 2; done",
+            ]
       containers:
-        - image: diegodev41/polyglot-security-api:latest
+        - image: diegodev41/security-api:latest
           name: polyglot-security-api
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:

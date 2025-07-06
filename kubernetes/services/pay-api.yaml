@@ -17,6 +17,15 @@ spec:
       labels:
         app: pay-api
     spec:
+      initContainers:
+        - name: wait-for-nacos
+          image: busybox:1.28
+          command:
+            [
+              "sh",
+              "-c",
+              "until nslookup nacos-server; do echo 'Waiting for Nacos DNS'; sleep 2; done; until wget -q --spider http://nacos-server:8848/nacos; do echo 'Waiting for Nacos service'; sleep 2; done",
+            ]
       containers:
         - image: diegodev41/polyglot-pay-api:latest
           name: polyglot-pay-api
