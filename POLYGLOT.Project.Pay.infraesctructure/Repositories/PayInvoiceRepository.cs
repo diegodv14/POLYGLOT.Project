@@ -21,7 +21,7 @@ namespace POLYGLOT.Project.Pay.infraestructure.Repositories
             _rabbitmq = rabbitmq;
         }
 
-        public async Task<ResponseSuccess> HandlePayInvoice(PayInvoiceRequest request, string token)
+        public async Task<ResponseSuccess<object>> Execute(PayInvoiceRequest request, string? token)
         {
 
             using var transaction = await _context.Database.BeginTransactionAsync();
@@ -102,10 +102,10 @@ namespace POLYGLOT.Project.Pay.infraestructure.Repositories
 
                 await transaction.CommitAsync();
 
-                return new ResponseSuccess()
+                return new ResponseSuccess<object>()
                 {
                     Message = "Pago registrado exitosamente",
-                    Status = 200
+                    Data = null
                 };
             }
             catch (Exception ex)

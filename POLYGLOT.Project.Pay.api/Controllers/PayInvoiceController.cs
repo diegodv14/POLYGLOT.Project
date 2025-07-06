@@ -17,14 +17,14 @@ namespace POLYGLOT.Project.Pay.api.Controllers
         [HttpPost]
         [Consumes("application/json")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(ResponseSuccess), 200)]
+        [ProducesResponseType(typeof(ResponseSuccess<object>), 200)]
         [ProducesResponseType(typeof(ResponseError), 500)]
         [ProducesResponseType(typeof(ResponseError), 404)]
         [Route("/PolyGlot/Pay/DoPay")]
-        public async Task<ActionResult<ResponseSuccess>> DoPay([FromBody] PayInvoiceRequest data)
+        public async Task<ActionResult<ResponseSuccess<object>>> DoPay([FromBody] PayInvoiceRequest data)
         {
             var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-            var res = await _pay.HandlePayInvoice(data, token);
+            var res = await _pay.Execute(data, token);
             return Ok(res);
         }
     }

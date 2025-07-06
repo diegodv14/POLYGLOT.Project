@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using POLYGLOT.Project.Invoice.application.Models;
 using POLYGLOT.Project.Invoice.infraestructure.Extensions;
 using POLYGLOT.Project.Invoice.infraestructure.Ioc;
 
@@ -11,6 +13,13 @@ builder.Services.AddInfraestructure(builder.Configuration);
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<DbInvoiceContext>();
+    context.Database.Migrate();
+}
 
 if (app.Environment.IsDevelopment())
 {

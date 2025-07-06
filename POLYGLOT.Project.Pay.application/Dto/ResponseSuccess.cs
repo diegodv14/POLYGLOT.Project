@@ -1,8 +1,8 @@
 ﻿namespace POLYGLOT.Project.Pay.application.Dto
 {
-    public class ResponseSuccess
+    public class ResponseSuccess<T>
     {
-        public string Message { get; set; }
-        public int Status { get; set; }
+        public string? Message { get; set; }
+        public T? Data { get; set; }
     }
 }

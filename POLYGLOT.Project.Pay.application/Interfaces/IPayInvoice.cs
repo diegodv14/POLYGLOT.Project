@@ -4,6 +4,6 @@ namespace POLYGLOT.Project.Pay.application.Interfaces
 {
     public interface IPayInvoice
     {
-        Task<ResponseSuccess> HandlePayInvoice(PayInvoiceRequest request, string token);
+        Task<ResponseSuccess<object>> Execute(PayInvoiceRequest payInvoice, string? token);
     }
 }

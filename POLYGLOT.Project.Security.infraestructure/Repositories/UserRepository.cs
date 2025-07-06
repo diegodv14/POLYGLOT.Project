@@ -19,7 +19,7 @@ namespace POLYGLOT.Project.Security.infraestructure.Repositories
         public async Task<ResponseSuccess> AddUser(AuthRequest data)
         {
             try
-            {
+            {   
                 var userExists = await _context.Users.FirstOrDefaultAsync(s => s.Username == data.Username);
 
                 if (userExists != null)
